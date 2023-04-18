@@ -41,7 +41,6 @@ class motorControll:
 		#self.stop()
 	
 
-
 	def stop(self):
 		self.pwmL.ChangeDutyCycle(0)
 		self.pwmR.ChangeDutyCycle(0)	
@@ -89,15 +88,39 @@ class motorControll:
 	def rotateLeft(self):
 		self.move(0,100)
 		distance = pi*self.wheel_separation /2
-		tim = (distance*60)/(60*2*pi*self.wheel_radius)*1.1
+		tim = (distance*60)/(60*2*pi*self.wheel_radius)*1.1 #1.1 is for inertial adjustments
 		time.sleep(tim)
 		print("rotate time :",tim)
+	
+	def rotateLeftAngle(self, angle, speedConst=1):
+		self.move(0,100*speedConst)
+		distance = 2*pi*self.wheel_separation*angle /360
+		tim = (distance*60)/(60*speedConst*2*pi*self.wheel_radius)*1.1 #1.1 is for inertial adjustments
+		time.sleep(tim)
+		print("Rotate Left time :",tim)
+
+	def rotateRightAngle(self, angle, speedConst=1):
+		self.move(100 *speedConst,0)
+		distance = 2*pi*self.wheel_separation*angle /360
+		tim = (distance*60)/(60*speedConst*2*pi*self.wheel_radius)*1.1 #1.1 is for inertial adjustments
+		time.sleep(tim)
+		print("Rotate Right time :",tim)
 		
 
 test = motorControll()
 #test.forward(.5)
 #test.backward(.5)
-test.rotateLeft()
+#test.rotateLeft()
+test.rotateLeftAngle(180)
+test.stop()
+time.sleep(2)
+test.rotateRightAngle(180)
+test.stop()
+time.sleep(2)
+test.rotateLeftAngle(360)
+test.stop()
+time.sleep(2)
+test.rotateRightAngle(360)
 test.stop()
 '''
 val="s"
